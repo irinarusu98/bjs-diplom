@@ -20,7 +20,7 @@ ApiConnector.current((response) => {
     } else {
         console.error('Error getting current user:', response.error);
     }
-
+});
 
 //Создайте объект типа RatesBoard
 const ratesBoard = new RatesBoard();
@@ -42,4 +42,3 @@ updateExchangeRates();
 
 setInterval(updateExchangeRates, 60000);
 
-});
