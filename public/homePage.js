@@ -1,27 +1,22 @@
-const logoutButton = new LogoutButton();
+const logoutButton = new LogoutButton();             //Создайте объект класса LogoutButton
 
 //В свойство action запишите функцию, которая будет вызывать запрос деавторизации (logout)
 logoutButton.action = function () {
     ApiConnector.logout((response) => {
         if (response.success) {
-            console.log('Logout successful');
-            location.reload();
-        } else {
-            console.error('Error during logout:', response.error);
+            location.reload();                        //если запрос выполнился успешно, то обновите страницу
         }
     });
 };
 
-//Выполните запрос на получение текущего пользователя 
+//Выполните запрос на получение текущего пользователя (current)
 ApiConnector.current((response) => {
     if (response.success) {
-        console.log('Current user:', response.data);
-        ProfileWidget.showProfile(response.data);     //если ответ успешный, то вызовите метод отображения данных профиля (ProfileWidget.showProfile) в который передавайте данные ответа от сервера.
-    } else {
-        console.error('Error getting current user:', response.error);
+        ProfileWidget.showProfile(response.data);     //если ответ успешный, то вызовите метод отображения данных профиля 
     }
 });
 
+//Получение текущих курсов валюты
 //Создайте объект типа RatesBoard
 const ratesBoard = new RatesBoard();
 
@@ -29,16 +24,104 @@ const ratesBoard = new RatesBoard();
 function updateExchangeRates() {
     ApiConnector.getStocks((response) => {
         if (response.success) {
-            console.log('Exchange rates:', response.data);
             ratesBoard.clearTable();                       // в случае успешного запроса, очищайте таблицу с данными (clearTable) и заполняйте её (fillTable) полученными данными
             ratesBoard.fillTable(response.data);
-        } else {
-            console.error('Error getting exchange rates:', response.error);
         }
     });
 }
 
 updateExchangeRates();
 
-setInterval(updateExchangeRates, 60000);
+setInterval(updateExchangeRates, 60000);                   //Напишите интервал, который будет многократно выполняться (раз в минуту) и вызывать вашу функцию с получением валют.
 
+
+//Операции с деньгами
+
+const moneyManager = new MoneyManager();                    //Создайте объект типа MoneyManager
+
+//Реализуйте пополнение баланса:
+moneyManager.addMoneyCallback = function (data) {
+    ApiConnector.addMoney(data, (response) => {             //  запрос на пополнение баланса (addMoney)
+        if (response.success) {
+            ProfileWidget.showProfile(response.data);
+            const successMessage = `Баланс успешно пополнен`;
+            moneyManager.setMessage(true, successMessage);
+        } else {
+            const errorMessage = `Ошибка при пополнении баланса`;
+            moneyManager.setMessage(false, errorMessage);
+        }
+    });
+};
+
+
+//  Реализуйте конвертирование валюты:
+moneyManager.conversionMoneyCallback = function (data) {
+    ApiConnector.convertMoney(data, (response) => {               //запрос на конвертацию баланса
+        if (response.success) {
+            ProfileWidget.showProfile(response.data);
+            const successMessage = `Конвертация выполнена`;
+            moneyManager.setMessage(true, successMessage);
+        } else {
+            const errorMessage = `Ошибка при конвертации`;
+            moneyManager.setMessage(false, errorMessage);
+        }
+    });
+};
+
+
+//Реализуйте перевод валюты:
+moneyManager.sendMoneyCallback = function (data) {
+    ApiConnector.transferMoney(data, (response) => {                //запрос на перевод валюты (transferMoney)
+        if (response.success) {
+            ProfileWidget.showProfile(response.data);
+            const successMessage = `Перевод выполнен`;
+            moneyManager.setMessage(true, successMessage);
+        } else {
+            const errorMessage = `Ошибка при переводе`;
+            moneyManager.setMessage(false, errorMessage);
+        }
+    });
+};
+
+
+//Работа с избранным
+const favoritesWidget = new FavoritesWidget();              //Создайте объект типа FavoritesWidget
+
+// Запросите начальный список избранного:
+ApiConnector.getFavorites((response) => {
+    if (response.success) {
+        favoritesWidget.clearTable();                       // При успешном запросе очистите текущий список избранного
+        favoritesWidget.fillTable(response.data);           // Отрисуйте полученные данные (fillTable)
+        favoritesWidget.updateUsersList(response.data);     // Заполните выпадающий список для перевода денег
+    }
+});
+
+
+//Реализуйте добавления пользователя в список избранных:
+favoritesWidget.addUserCallback = function (data) {
+    ApiConnector.addUserToFavorites(data, (response) => {
+        if (response.success) {
+            favoritesWidget.clearTable();                     // После успешного запроса очищаем текущий список избранного
+            favoritesWidget.fillTable(response.data);
+            favoritesWidget.updateUsersList(response.data);
+            favoritesWidget.setMessage(true, "Пользователь успешно добавлен в избранное");             // Выводим сообщ. об успехе или ошибке
+        } else {
+            favoritesWidget.setMessage(false, `Ошибка при добавлении пользователя в избранное: ${response.error}`);
+        }
+    });
+};
+
+
+// Реализуйте удаление пользователя из избранного
+favoritesWidget.removeUserCallback = function (data) {
+    ApiConnector.removeUserFromFavorites(data, (response) => {
+        if (response.success) {
+            favoritesWidget.clearTable();                         // После успешного запроса очищаем текущий список избранного
+            favoritesWidget.fillTable(response.data);
+            favoritesWidget.updateUsersList(response.data);
+            favoritesWidget.setMessage(true, "Пользователь успешно удален из избранного");        // Выводим сообщ. об успехе или ошибке
+        } else {
+            favoritesWidget.setMessage(false, `Ошибка при удалении пользователя из избранного: ${response.error}`);
+        }
+    });
+};
