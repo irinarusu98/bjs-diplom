@@ -94,11 +94,8 @@ ApiConnector.getFavorites((response) => {
     if (response.success) {
         favoritesWidget.clearTable();                       // При успешном запросе очистите текущий список избранного
         favoritesWidget.fillTable(response.data);           // Отрисуйте полученные данные (fillTable)
-        favoritesWidget.updateUsersList(response.data);     // Заполните выпадающий список для перевода денег
-    } else {
-        const errorMessage = `Ошибка при получении списка избранного: ${response.error}`;
-        moneyManager.setMessage(false, errorMessage);
-    }
+        moneyManager.updateUsersList(response.data);     // Заполните выпадающий список для перевода денег
+    } 
 });
 
 
@@ -108,11 +105,10 @@ favoritesWidget.addUserCallback = function (data) {
         if (response.success) {
             favoritesWidget.clearTable();                     // После успешного запроса очищаем текущий список избранного
             favoritesWidget.fillTable(response.data);
-            favoritesWidget.updateUsersList(response.data);
+            moneyManager.updateUsersList(response.data);
             favoritesWidget.setMessage(true, "Пользователь успешно добавлен в избранное");             // Выводим сообщ. об успехе или ошибке
         } else {
-            const errorMessage = `Ошибка при добавлении пользователя в избранное: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage);
+            favoritesWidget.setMessage(false, "Ошибка при добавлении пользователся в избранное : ${response.error}");
         }
     });
 };
@@ -124,11 +120,10 @@ favoritesWidget.removeUserCallback = function (data) {
         if (response.success) {
             favoritesWidget.clearTable();                         // После успешного запроса очищаем текущий список избранного
             favoritesWidget.fillTable(response.data);
-            favoritesWidget.updateUsersList(response.data);
+            moneyManager.updateUsersList(response.data);
             favoritesWidget.setMessage(true, "Пользователь успешно удален из избранного");        // Выводим сообщ. об успехе или ошибке
         } else {
-            const errorMessage = `Ошибка при удалении пользователя из избранного: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage);
+            favoritesWidget.setMessage(false, "Ошибка при удалении пользователся в избранное : ${response.error}");
         }
     });
 };
