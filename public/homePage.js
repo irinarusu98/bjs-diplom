@@ -46,9 +46,10 @@ moneyManager.addMoneyCallback = function (data) {
             ProfileWidget.showProfile(response.data);
             const successMessage = `Баланс успешно пополнен на ${data.amount} ${data.currency}`;
             moneyManager.setMessage(true, successMessage);
+            moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при пополнении баланса: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage);
+            moneyManager.setMessage(false, errorMessage, response);
         }
     });
 };
@@ -64,7 +65,7 @@ moneyManager.conversionMoneyCallback = function (data) {
             moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при конвертации: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage);
+            moneyManager.setMessage(false, errorMessage, response);
         }
     });
 };
@@ -80,7 +81,7 @@ moneyManager.sendMoneyCallback = function (data) {
             moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при переводе: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage);
+            moneyManager.setMessage(false, errorMessage, response);
         }
     });
 };
@@ -95,7 +96,7 @@ ApiConnector.getFavorites((response) => {
         favoritesWidget.clearTable();                       // При успешном запросе очистите текущий список избранного
         favoritesWidget.fillTable(response.data);           // Отрисуйте полученные данные (fillTable)
         moneyManager.updateUsersList(response.data);     // Заполните выпадающий список для перевода денег
-    } 
+    }
 });
 
 
