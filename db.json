@@ -67,6 +67,18 @@
       "password": "demo",
       "id": 6,
       "balance": {
+        "RUB": 10000,
+        "USD": 0,
+        "EUR": 612.1817950339467,
+        "NTC": 4.271131422713877
+      }
+    },
+    {
+      "created_at": "2024-01-23T17:36:46.208Z",
+      "login": " ivan@demo.ru",
+      "password": "DEMO",
+      "id": 7,
+      "balance": {
         "RUB": 0,
         "USD": 0,
         "EUR": 0,
