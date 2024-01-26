@@ -97,7 +97,7 @@ ApiConnector.getFavorites((response) => {
         favoritesWidget.updateUsersList(response.data);     // Заполните выпадающий список для перевода денег
     } else {
         const errorMessage = `Ошибка при получении списка избранного: ${response.error}`;
-        favoritesWidget.setMessage(false, errorMessage);
+        moneyManager.setMessage(false, errorMessage);
     }
 });
 
@@ -112,7 +112,7 @@ favoritesWidget.addUserCallback = function (data) {
             favoritesWidget.setMessage(true, "Пользователь успешно добавлен в избранное");             // Выводим сообщ. об успехе или ошибке
         } else {
             const errorMessage = `Ошибка при добавлении пользователя в избранное: ${response.error}`;
-            favoritesWidget.setMessage(false, errorMessage);
+            moneyManager.setMessage(false, errorMessage);
         }
     });
 };
@@ -128,7 +128,7 @@ favoritesWidget.removeUserCallback = function (data) {
             favoritesWidget.setMessage(true, "Пользователь успешно удален из избранного");        // Выводим сообщ. об успехе или ошибке
         } else {
             const errorMessage = `Ошибка при удалении пользователя из избранного: ${response.error}`;
-            favoritesWidget.setMessage(false, errorMessage);
+            moneyManager.setMessage(false, errorMessage);
         }
     });
 };
