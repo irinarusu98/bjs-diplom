@@ -61,6 +61,7 @@ moneyManager.conversionMoneyCallback = function (data) {
             ProfileWidget.showProfile(response.data);
             const successMessage = `Конвертация выполнена: ${data.fromAmount} ${data.fromCurrency} -> ${data.targetCurrency}`;
             moneyManager.setMessage(true, successMessage);
+            moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при конвертации: ${response.error}`;
             moneyManager.setMessage(false, errorMessage);
@@ -76,6 +77,7 @@ moneyManager.sendMoneyCallback = function (data) {
             ProfileWidget.showProfile(response.data);
             const successMessage = `Перевод выполнен: ${data.amount} ${data.currency} пользователю ${data.to}`;
             moneyManager.setMessage(true, successMessage);
+            moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при переводе: ${response.error}`;
             moneyManager.setMessage(false, errorMessage);
