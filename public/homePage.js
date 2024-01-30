@@ -46,10 +46,10 @@ moneyManager.addMoneyCallback = function (data) {
             ProfileWidget.showProfile(response.data);
             const successMessage = `Баланс успешно пополнен на ${data.amount} ${data.currency}`;
             moneyManager.setMessage(true, successMessage);
-            // moneyManager.updateUsersList(response.data);
+            moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при пополнении баланса: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage, response);
+            moneyManager.setMessage(false, response.error);
         }
     });
 };
@@ -65,7 +65,7 @@ moneyManager.conversionMoneyCallback = function (data) {
             // moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при конвертации: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage, response);
+            moneyManager.setMessage(false, response.error);
         }
     });
 };
@@ -81,7 +81,7 @@ moneyManager.sendMoneyCallback = function (data) {
             // moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при переводе: ${response.error}`;
-            moneyManager.setMessage(false, errorMessage, response);
+            moneyManager.setMessage(false, response.error);
         }
     });
 };
@@ -107,9 +107,9 @@ favoritesWidget.addUserCallback = function (data) {
             favoritesWidget.clearTable();                     // После успешного запроса очищаем текущий список избранного
             favoritesWidget.fillTable(response.data);
             moneyManager.updateUsersList(response.data);
-            favoritesWidget.setMessage(true, "Пользователь успешно добавлен в избранное");             // Выводим сообщ. об успехе или ошибке
+            favoritesWidget.setMessage(true, `Пользователь успешно добавлен в избранное`);             // Выводим сообщ. об успехе или ошибке
         } else {
-            favoritesWidget.setMessage(false, "Ошибка при добавлении пользователся в избранное : ${response.error}");
+            favoritesWidget.setMessage(false, `Ошибка при добавлении пользователся в избранное : ${response.error}`);
         }
     });
 };
@@ -122,9 +122,9 @@ favoritesWidget.removeUserCallback = function (data) {
             favoritesWidget.clearTable();                         // После успешного запроса очищаем текущий список избранного
             favoritesWidget.fillTable(response.data);
             moneyManager.updateUsersList(response.data);
-            favoritesWidget.setMessage(true, "Пользователь успешно удален из избранного");        // Выводим сообщ. об успехе или ошибке
+            favoritesWidget.setMessage(true, `Пользователь успешно удален из избранного`);        // Выводим сообщ. об успехе или ошибке
         } else {
-            favoritesWidget.setMessage(false, "Ошибка при удалении пользователся в избранное : ${response.error}");
+            favoritesWidget.setMessage(false, `Ошибка при удалении пользователся в избранное : ${response.error}`);
         }
     });
 };
