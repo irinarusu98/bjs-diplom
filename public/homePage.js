@@ -49,7 +49,7 @@ moneyManager.addMoneyCallback = function (data) {
             moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при пополнении баланса: ${response.error}`;
-            moneyManager.setMessage(false, response.error);
+            moneyManager.setMessage(false, errorMessage);
         }
     });
 };
@@ -65,7 +65,7 @@ moneyManager.conversionMoneyCallback = function (data) {
             // moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при конвертации: ${response.error}`;
-            moneyManager.setMessage(false, response.error);
+            moneyManager.setMessage(false, errorMessage);
         }
     });
 };
@@ -81,7 +81,7 @@ moneyManager.sendMoneyCallback = function (data) {
             // moneyManager.updateUsersList(response.data);
         } else {
             const errorMessage = `Ошибка при переводе: ${response.error}`;
-            moneyManager.setMessage(false, response.error);
+            moneyManager.setMessage(false, errorMessage);
         }
     });
 };
